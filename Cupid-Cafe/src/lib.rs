@@ -9,7 +9,7 @@ use turbo::{camera::y, *};
 struct GameState {
     // Add fields here   
     pub reader: reader::Reader, 
-    uiButtons: [Button; 5],
+    uiButtons: [Button; 7],
 
     pub day: i32,
     pub dayMax: i32,
@@ -26,6 +26,13 @@ struct GameState {
     pub currClient: i32,
     pub answer: String,
     pub answerDesc: Vec<String>,
+    pub bingleCheck: bool,
+
+    //char Description
+    pub artistDesc: [String; 5],
+    pub performDesc: [String; 5],
+    pub bingleDesc: [String; 5],
+    pub baristaDesc: [String; 5],
     
     pub intro: bool,
     pub clientEnd: bool,
@@ -33,6 +40,7 @@ struct GameState {
     pub selected: (bool,usize),
     pub ending: i32,
     pub noteAct: bool,
+    pub notePage: i32,
 
 }
 impl GameState {
@@ -48,6 +56,8 @@ impl GameState {
                 Button::new("start", (1199.0, 380.0, 260.0, 70.0), false),
                 Button::new("yes", (230.0, 200.0, 130.0, 100.0), false),
                 Button::new("no", (560.0, 200.0, 130.0, 100.0), false),
+                Button::new("left", (129.0,230.0,25.0,40.0), false),
+                Button::new("right", (746.0,230.0,25.0,40.0), false),
             ],
 
             
@@ -55,7 +65,7 @@ impl GameState {
             day: 0,
             dayMax: 4,
             interact: 3,
-            progressMax: 5,
+            progressMax: 4,
             talking: "".to_string(),
             whoTalking: "".to_string(),
             cameraPos: (1333,250),
@@ -71,6 +81,38 @@ impl GameState {
             currClient: 0,
             answer: "".to_string(),
             answerDesc: vec!["".to_string()],
+            bingleCheck: false,
+
+            //description
+            artistDesc: [
+                "".to_string(),
+                "Furry artist".to_string(),
+                "ambivert".to_string(),
+                "dancer".to_string(),
+                "colorful hair".to_string(),
+            ],
+            performDesc: [
+                "".to_string(),
+                "5'7\" (actually 5'\"6)".to_string(),
+                "extorverted".to_string(),
+                "collecting feminist literature".to_string(),
+                "ceremonial grade matcha".to_string(),
+            ],
+            bingleDesc: [
+                "".to_string(),
+                "handsome".to_string(),
+                "meows cutely".to_string(),
+                "big foodie".to_string(),
+                "10/10 loafs".to_string(),
+            ],
+            baristaDesc: [
+                "".to_string(),
+                "".to_string(),
+                "".to_string(),
+                "".to_string(),
+                "".to_string(),
+            ],
+
 
             //gamestates
             intro: false,
@@ -79,6 +121,7 @@ impl GameState {
             selected: (false, 0),
             ending: 0,
             noteAct: false,
+            notePage: 0,
             
         }
     }
@@ -114,10 +157,8 @@ impl GameState {
         
         if !self.intro && self.day <= self.dayMax && !self.clientEnd{
             sprite!("cafe", x = 0, y = 0);
-            sprite!("cat", x = 0, y = 0);
         } else if self.clientEnd {
             sprite!("cafe", x = 0, y = 0);
-            sprite!("cat", x = 0, y = 0);
             sprite!("talkBG", x = 0, y = 0);
         }
         
@@ -131,36 +172,29 @@ impl GameState {
             *self = GameState::new();
             text!("bruz", x = 40, y = 100, font = "TENPIXELS");
         } else if self.ending == 1 && !self.reader.speaking {
+            self.npc = Vec::new();
+            self.answerDesc = Vec::new();
             self.currClient += 1;
             self.clientUpdate(self.currClient);
             self.ending = 0;
             self.day = 0;
             self.talking = self.currClient.to_string() + &"client".to_string() + &1.to_string();
+            self.reader.npcName = "Client".to_string();
             self.clientEnd = false;
             self.choosing = false;
             self.selected.0 = false;
             self.selected.1 = 0;
             self.noteAct = false;
             self.reader.speaking = true;
-
-
         }
 
 
         let mut xOffset: f32 = 50.0;
         //for loop to check npcs during the day
         for n in 0..self.npc.len() {
-            //WHEN self.clientEnd IS TRUE
-            //LINE UP EVERYONE AFTER SPEAKING IS FALSE AND
-            //self.clientEnd IS TRUE
-            //THEN WHEN THE PLAYER PRESSES ON EACH PERSON
-            //SHOW THEIR INFO AND DO A DIALOGUE OF IF THIS IS THE RIGHT PERSON OR NOT
-            //BUT MAKE IT SHOW BUTTONS TO PRESS YES OR NO
-            //IF NO, GO BACK TO ALL PERSON SCREEN
-            //IF YES, CONTINUE DIALOGUE TO END2
-            //
-            //
+
             if self.noteAct {
+                text!("{}",self.noteAct; x = 0, y = 10);
                 self.npc[n].action = false;
             } else if self.selected.0 {
                 self.npc[n].action = false;
@@ -205,12 +239,20 @@ impl GameState {
                             self.npcInteract(n);
                         }
                     }
+                    "bingleFart" => {
+                        if self.choosing {
+                            self.selected.0 = true;
+                            self.selected.1 = n;
+                        } else {
+                            self.npcInteract(n);
+                        }
+                    }
                     _=> {}
                 }
             }
             
             if self.day != 0 && !self.clientEnd{
-                self.npc[n].tempDraw(&self.npc[n].text);
+                //self.npc[n].tempDraw(&self.npc[n].text);
                 self.npc[n].draw(false);
             }
 
@@ -257,7 +299,12 @@ impl GameState {
         if self.selected.0 {
             sprite!("talkBG", x = 0, y = 0);
             let insert = format!("{}_stare", self.npc[self.selected.1].text);
-            sprite!(&insert.to_string(), x = 338, y = 10);
+            if self.npc[self.selected.1].text == "bingleFart" {
+                sprite!(&insert.to_string(), x = 325, y = 165);
+            } else {
+                sprite!(&insert.to_string(), x = 338, y = 10);
+            }
+            
             rect!(x = 205, y = 390, w = 625, h = 110, 
                 color = 0xF1BEDFFF, 
                 border_size = 4, 
@@ -282,9 +329,7 @@ impl GameState {
                 //for loop to check UI Buttons
         for n in 0..self.uiButtons.len() {
             let select = self.uiButtons[n].check(select);
-            if self.noteAct && n != 1{
-                self.uiButtons[n].action = false;
-            }
+            
             if self.reader.speaking || self.intro{
                 self.uiButtons[n].action = false;
             }
@@ -294,8 +339,14 @@ impl GameState {
             if self.selected.0 && n <= 2 {
                 self.uiButtons[n].action = false;
             } 
-            if !self.selected.0 && n >= 3 {
+            if !self.selected.0 && n >= 3 && n <= 4{
                 self.uiButtons[n].action =false;
+            }
+            if self.choosing && n == 0 && n >= 2 && !self.noteAct {
+                self.uiButtons[n].action = false;
+            }
+            if self.selected.0 && n == 3 && !self.bingleCheck{
+                self.uiButtons[n].action = false;
             }
             if self.uiButtons[n].action {
                 match n {
@@ -325,6 +376,7 @@ impl GameState {
                             self.noteAct = false
                         } else {
                             self.noteAct = true;
+                            self.notePage = 1;
                         }
                         self.uiButtons[n].action = false;
                     }
@@ -347,8 +399,8 @@ impl GameState {
                             self.reader.speaking = true;
                             self.ending = 2;
                             self.reader.drawText(&self.talking, &self.whoTalking);
-
                         }
+                        self.bingleCheck = false;
                         
                         self.uiButtons[n].action = false;
                     }
@@ -356,6 +408,18 @@ impl GameState {
                     4 => {
                         self.selected.0 = false;
                         self.selected.1 = 0;
+                        self.bingleCheck = false;
+                        self.uiButtons[n].action = false;
+                    }
+                    //left notepad
+                    5 => {
+                        self.notePage = 1;
+                        self.uiButtons[n].action = false;
+                    }
+                    //right notepad
+                    6 => {
+                        self.notePage = 2;
+                        
                         self.uiButtons[n].action = false;
                     }
                     _=> {}
@@ -370,7 +434,7 @@ impl GameState {
             if !self.intro && n != 0 && n <= 2{
                 self.uiButtons[n].draw(false);
             }
-            if self.selected.0 && n >= 3{
+            if self.selected.0 && n >= 3 && n <= 4{
                 self.uiButtons[n].draw(false);
             }
         }
@@ -379,10 +443,17 @@ impl GameState {
             //temp prints
             text!("DAY: {}", self.day; x = 790, y = 80, font = "TENPIXELS", color = 0x000000ff);
             match self.interact {
-                3 => { sprite!("health3", x = 30, y = 0)}
-                2 => { sprite!("health2", x = 30, y = 0)}
-                1 => { sprite!("health1", x = 30, y = 0)}
-                0 => { sprite!("health0", x = 30, y = 0)}
+                3 => { sprite!("health3", x = 30, y = -23)}
+                2 => { sprite!("health2", x = 30, y = -23)}
+                1 => { sprite!("health1", x = 30, y = -23)}
+                0 => { sprite!("health0", x = 30, y = -23)}
+                _=> {}
+            }
+            match self.day {
+                4 => {sprite!("day4", x = 0, y = 0)}
+                3 => {sprite!("day3", x = 0, y = 0)}
+                2 => {sprite!("day2", x = 0, y = 0)}
+                1 => {sprite!("day1", x = 0, y = 0)}
                 _=> {}
             }
             
@@ -394,23 +465,80 @@ impl GameState {
             } 
             if self.noteAct {
                 sprite!("notepadOpen", x = 0, y = 0);
-                text!("They supposedly want: ", x = 220, y = 120, font = "TENPIXELS", color = 0x000000ff);
-                let mut yoffSet = 10;
-                for n in 0..self.answerDesc.len() {
-                    text!("{}", self.answerDesc[n]; x = 220, y = 120 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
-                    yoffSet += 40;
+                let mut yoffSet = 20;
+                if self.notePage == 1 {
+                    if self.currClient == 1 {
+                        sprite!("notepad1", x = 0, y = 0);
+                        for n in 0..self.npcProgress.len() {
+                            //text!("{}", self.npcProgress[n]; x = 10, y = 10);
+                            for m in 0..self.npcProgress[n] + 1 {
+                                text!("{}", m; x = 10, y = 10);
+                                match n {
+                                    3 => {
+                                        if self.npcProgress[n] == 0 {
+                                            text!("?????", x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                        } else {
+                                            text!("{}", self.baristaDesc[ m as usize]; x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                            
+                                        }
+                                    }
+                                    2 => {
+                                        if self.npcProgress[n] == 0 {
+                                            text!("?????", x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                        } else {
+                                            text!("{}", self.bingleDesc[ m as usize]; x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                            
+                                        }
+                                    }
+                                    1 => {
+                                        if self.npcProgress[n] == 0 {
+                                            text!("?????", x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                        } else {
+                                            text!("{}", self.artistDesc[ m as usize]; x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                            
+                                        }
+                                    }
+                                    0 => {
+                                        if self.npcProgress[n] == 0 {
+                                            text!("?????", x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                        } else {
+                                            text!("{}", self.performDesc[ m as usize]; x = 620, y = 110 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                                            
+                                        }
+                                    }
+                                    _=> {}
+                                }
+                                yoffSet += 20;
+                            }
+                        }
+                    } else if self.currClient == 2 {
+                        sprite!("notepad2", x = 0, y = 0);
+                    }
+                    self.uiButtons[6].draw(false);
+                } else if self.notePage == 2 {
+                    text!("They supposedly want: ", x = 220, y = 120, font = "TENPIXELS", color = 0x000000ff);
+                    let mut yoffSet = 10;
+                    for n in 0..self.answerDesc.len() {
+                        text!("{}", self.answerDesc[n]; x = 220, y = 120 + yoffSet, font = "TENPIXELS", color = 0x000000ff);
+                        yoffSet += 40;
+                    }
+                    self.uiButtons[5].draw(false);
                 }
             }
             if self.currClient == 2 && !self.reader.speaking && self.day == 0{
                 self.day += 1;
             }
+            if self.selected.0 && !self.bingleCheck && m.just_released() {
+                self.bingleCheck = true;
+            }
+            text!("{}", self.npcProgress[1]; x = 20, y =20);
         }
-        text!("{}",self.talking; x = 0, y = 10);
+        
     }
 
     pub fn npcInteract (&mut self, n: usize) {
         self.interact -= 1;
-        if self.npcProgress[n] <= self.progressMax {
+        if self.npcProgress[n] < self.progressMax {
             self.npcProgress[n] += 1;
         }
         self.reader.speaking = true;
@@ -424,7 +552,8 @@ impl GameState {
             1 => {
                 self.npc.push(Button::new("performative", (690.0, 220.0, 110.0, 180.0), false));
                 self.npc.push(Button::new("artist",(50.0, 174.0, 90.0, 225.0), false));
-                self.npcProgress = vec![0,0];
+                self.npc.push(Button::new("bingleFart",(290.0, 225.0, 50.0, 50.0), false));
+                self.npcProgress = vec![0,0,0];
                 self.answer = "artist".to_string();
                 self.answerDesc.push("Tall".to_string());
                 self.answerDesc.push("Artsy".to_string());
@@ -432,8 +561,9 @@ impl GameState {
             2 => {
                 self.npc.push(Button::new("performative", (690.0, 220.0, 110.0, 180.0), false));
                 self.npc.push(Button::new("artist",(50.0, 174.0, 90.0, 225.0), false));
-                self.npc.push(Button::new("barista", (200.0,200.0, 200.0,200.0), false));
-                self.npcProgress = vec![0,0,0];
+                self.npc.push(Button::new("bingleFart",(290.0, 225.0, 50.0, 50.0), false));
+                self.npc.push(Button::new("barista", (334.0,135.0, 100.0,130.0), false));
+                self.npcProgress = vec![0,0,0,0];
                 self.answer = "barista".to_string();
                 self.answerDesc.push("Listens well".to_string());
                 self.answerDesc.push("Not Fake".to_string());
