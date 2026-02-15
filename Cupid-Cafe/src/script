@@ -1,0 +1,146 @@
+intro
+--cupidTalk
+Man, I'm giga broke.. What am I going to do...
+I know! With all those trash ass dating apps around, I can come in handy!
+--posterUp
+This poster should do it!
+*RIIIIIIIING*
+And look at that, my first client!
+--posterDown
+--cupidNot
+Hello? Is this the professional cupid? I need your help.
+--cupidTalk
+With a small payment of $214, I can help you get cuffed in no time!
+--cupidNot
+Perfect, I'm trying to get a Valentines which is in 4 days, so I'll leave that to you!
+I want someone who's tall and artsy!
+--cupidTalk
+W-wait 4 days? I m-
+*CLACK*
+Welp.. I guess I have to find that perfect person
+--end
+
+===================================================================
+
+1performative1
+--talk
+--cupidNot
+Oh hey, didn't see you there.. I was too engrossed in my feminine literature.
+--stare
+--cupidTalk
+Oh, sorry if I was bothering you.
+--talk
+--cupidNot
+No, no. Honestly no one has approached me yet, so I'm glad someone did.
+--stare
+--cupidTalk
+Uh, okay.. so-
+--talk
+--cupidNot
+If you see any females around, point them to my direction. Help a bro out you know?
+--stare
+--cupidTalk
+Alright I guess..
+--end
+
+1artist1
+--talk
+--cupidNot
+Hey, I haven't seen you around before. What's your name?
+--stare
+--cupidTalk
+I'm cupid! Nice to meet you! I saw your drawings, they look awesome!
+--talk
+--cupidNot
+Thanks, really appreicate it! Hope to see you around more, gonna go back to drawing
+--stare
+--cupidTalk
+Alright, see ya!
+--end
+
+1performative2
+--talk
+--cupidNot
+Back for more??? Ayo bet, let me buy you some dinner
+Then maybe we go back to my place???? *tongue out
+--end
+
+1artist2
+--talk
+--cupidNot
+hi hi hii
+bye bye bye
+--end
+
+1performative3
+--talk
+--cupidNot
+freaky freaky
+--end
+
+1artist3
+--talk
+--cupidNot
+hee hee hee
+bye bye bye
+--end
+
+1performative4
+--talk
+--cupidNot
+freakvian
+--end
+
+1artist4
+--talk
+--cupidNot
+bro
+--end
+
+1performative5
+--talk
+--cupidNot
+cooked
+--end
+
+1artist5
+--talk
+--cupidNot
+fro
+--end
+
+1clientEnd1
+--cupidTalk
+So.. have you found my fated partner? I'm really looking forward to it!
+Let me know which one it will be :)
+--end
+
+1clientEnd2Good
+--cupidTalk
+omg a match made in heaven
+--end
+
+1clientEnd2Bad
+--cupidTalk
+a G ur cooked
+bad date and they hated each other
+--end
+
+===================================================================
+
+2client1
+--cupidTalk
+After a successfull pairing, I already got a new client!
+--cupidNot
+Hello? I've heard that you have a 100% pairing rate.
+--cupidTalk
+Why of course I do, just talk to my last client! But anyways, how can I help?
+--cupidNot
+I'm looking for someone who will listen to me, is not fake, and is skilled in their craft.
+--cupidTalk
+Now that's a tall order, but nothing I can't fi-
+--cupidNot
+Oh and in 4 days please. Thanks!
+--cupidTalk
+I should've seen that coming..
+--end

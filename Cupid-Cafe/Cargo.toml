@@ -1,0 +1,13 @@
+[package]
+name = "Cupid-Cafe"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+turbo = { version = "5.0.0", package = "turbo-genesis-sdk" }
+
+[lib]
+crate-type = ["cdylib"]
+
+[lints.rust]
+unexpected_cfgs = { level = "allow" }

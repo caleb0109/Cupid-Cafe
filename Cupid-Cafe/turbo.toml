@@ -1,0 +1,8 @@
+name = "Cupid-Cafe"
+version = "0.1.0"
+description = "An awesome game made in Turbo!"
+authors = ["Anonymous"]
+
+[canvas]
+width = 889
+height = 500
