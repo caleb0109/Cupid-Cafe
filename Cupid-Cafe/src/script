@@ -43,6 +43,27 @@ If you see any females around, point them to my direction. Help a bro out you kn
 Alright I guess..
 --end
 
+1bingleFart1
+--talk
+--cupidNot
+Meow
+--stare
+--cupidTalk
+Hey there kitty, whats your name?
+--talk
+--cupidNot
+Mro
+--stare
+--cupidTalk
+Mro is a cute name. Who gave it to you?
+--talk
+--cupidNot
+Meow
+--stare
+--cupidTalk
+Can this cat even understand me?
+--end
+
 1artist1
 --talk
 --cupidNot
@@ -97,18 +118,6 @@ freakvian
 bro
 --end
 
-1performative5
---talk
---cupidNot
-cooked
---end
-
-1artist5
---talk
---cupidNot
-fro
---end
-
 1clientEnd1
 --cupidTalk
 So.. have you found my fated partner? I'm really looking forward to it!
@@ -143,4 +152,10 @@ Now that's a tall order, but nothing I can't fi-
 Oh and in 4 days please. Thanks!
 --cupidTalk
 I should've seen that coming..
+--end
+
+2barista1
+--talk
+--cupidNot
+hello, what u want
 --end

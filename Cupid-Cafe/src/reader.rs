@@ -1,6 +1,6 @@
 use std::string;
 
-use turbo::{text::Text, *};
+use turbo::{text::Text, utils::color, *};
 static SCRIPT_PATH: &str = std::include_str!("script");
 use crate::button::button::Button;
 
@@ -78,14 +78,84 @@ impl Reader {
                 "artist" => {
                     sprite!(&self.speakingProfile, x = 338, y = 10);
                     self.npcName = "Jamie".to_string();
+                    rect!(x = 205, y = 350, w = 80, h = 40,
+                        color = 0x8072b7FF, 
+                        border_size = 4, 
+                        border_color = 0xa088ccff,
+                        border_radius = 4
+                    );
+                    text!("{}", self.npcName;
+                        x = 217,
+                        y = 364, 
+                        font = "TENPIXELS", 
+                        color = 0xbdc8f4ff,
+                    );
                 } 
                 "performative" => {
                     sprite!(&self.speakingProfile, x = 338, y = 10);
                     self.npcName = "Will".to_string();
+                    rect!(x = 205, y = 350, w = 80, h = 40,
+                        color = 0x52783dFF, 
+                        border_size = 4, 
+                        border_color = 0x7d9e61ff,
+                        border_radius = 4
+                    );
+                    text!("{}", self.npcName;
+                        x = 217,
+                        y = 364, 
+                        font = "TENPIXELS", 
+                        color = 0xeddcb8ff,
+                    );
                 }
-                _=> {}
+                "barista" => {
+                    sprite!(&self.speakingProfile, x = 338, y = 10);
+                    self.npcName = "Rae".to_string();
+                    rect!(x = 205, y = 350, w = 80, h = 40,
+                        color = 0x274d64FF, 
+                        border_size = 4, 
+                        border_color = 0x81dfd0ff,
+                        border_radius = 4
+                    );
+                    text!("{}", self.npcName;
+                        x = 217,
+                        y = 364, 
+                        font = "TENPIXELS", 
+                        color = 0x81dfd0ff,
+                    );
+                }
+                "bingleFart" => {
+                    sprite!(&self.speakingProfile, x = 338, y = 165);
+                    self.npcName = "Mro".to_string();
+                    rect!(x = 205, y = 350, w = 80, h = 40,
+                        color = 0xe57248FF, 
+                        border_size = 4, 
+                        border_color = 0xf5a764ff,
+                        border_radius = 4
+                    );
+                    text!("{}", self.npcName;
+                        x = 217,
+                        y = 364, 
+                        font = "TENPIXELS", 
+                        color = 0xffec8aff,
+                    );
+                }
+                _=> {
+                    self.npcName = "Client".to_string();
+                    rect!(x = 205, y = 350, w = 80, h = 40,
+                        color = 0x274d64FF, 
+                        border_size = 4, 
+                        border_color = 0xffec8aff,
+                        border_radius = 4
+                    );
+                    text!("{}", self.npcName;
+                        x = 217,
+                        y = 364, 
+                        font = "TENPIXELS", 
+                        color = 0x81dfd0ff,
+                    );
+                }
             }
-            // sprite!("textbubble", x = 253, y= 376);
+            sprite!("cupid", x = 0, y = 10);
             if self.cupidTalk {
                 rect!(x = 205, y = 350, w = 80, h = 40,
                     color = 0xF1BEDFFF, 
@@ -99,7 +169,7 @@ impl Reader {
                 font = "TENPIXELS", 
                 color = 0xcf3b7aff,
                 );
-            } else {
+            } else if self.npcName == "Client"{
                 rect!(x = 205, y = 350, w = 80, h = 40,
                     color = 0xF1BEDFFF, 
                     border_size = 4, 
